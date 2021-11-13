@@ -1,7 +1,7 @@
 {
-  "name": "module-ts-template",
+  "name": "@macchiatojs/views",
   "version": "0.0.0",
-  "description": "",
+  "description": "Macchiato.js view render engine based on ejs.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mongodb-helpers/module-ts-template.git"
+    "url": "git+https://github.com/macchiatojs/views.git"
   },
   "keywords": [],
   "license": "MIT",
@@ -38,7 +38,7 @@
     "node": ">= 14"
   },
   "bugs": {
-    "url": "https://github.com/mongodb-helpers/module-ts-template/issues"
+    "url": "https://github.com/macchiatojs/views/issues"
   },
-  "homepage": "https://github.com/mongodb-helpers/module-ts-template#readme"
+  "homepage": "https://github.com/macchiatojs/views#readme"
 }
