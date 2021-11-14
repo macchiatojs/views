@@ -1,48 +1,53 @@
-// TODO: need more work
+/*!
+ * @macchiatojs/views
+ *
+ *
+ * Copyright(c) 2021 Imed Jaberi
+ * MIT Licensed
+ */
+
+'use strict'
+
+/**
+ * Module dependencies.
+ */
+
 import * as ejs from 'ejs'
 import path from 'path'
 import fs from 'fs/promises'
 import type { KeyValueObject } from '@macchiatojs/kernel'
 
 /**
- * default render options
- * @type {Object}
+ * @type View engine settings
  */
-const defaultSettings = {
-  cache: true,
-  layout: 'layout',
-  viewExt: 'html',
-  locals: {},
-  compileDebug: false,
-  debug: false,
-  writeResp: true,
-  async: false,
-}
-
-interface ViewSettings extends ejs.Options {
-  root: string,
-  // cache: boolean,
-  layout: string,
-  viewExt: string,
-  locals?: ejs.Data,
-  compileDebug?: boolean,
-  // debug: false,
-  writeResp?: boolean,
-  async?: boolean
+interface ViewEngineSettings extends ejs.Options {
+  root: string
+  viewExt: string
 }
 
 /**
- *
+ * Macchiato.js view render engine based on ejs.
+ * @api public
  */
-export class ViewEngine {
-  #settings: ViewSettings
+class ViewEngine {
+  #settings: ViewEngineSettings
   #cache: KeyValueObject<ejs.TemplateFunction | ejs.AsyncTemplateFunction>
+  static defaultSettings = {
+    cache: true,
+    viewExt: 'html',
+    compileDebug: false,
+    debug: false,
+    async: false,
+  }
 
-  constructor(settings: ViewSettings) {
-    this.#settings = { ...defaultSettings, ...settings }
+  constructor(settings: ViewEngineSettings) {
+    // merge default settings and passed settings
+    this.#settings = { ...ViewEngine.defaultSettings, ...settings }
+    // get the root path of the view directory
     this.#settings.root = path.resolve(process.cwd(), settings.root)
     // cache the generate package
     this.#cache = {}
+    // get the view extension [.html, .ejs, ...etc]
     this.#settings.viewExt = settings.viewExt
       ? '.' + settings.viewExt.replace(/^\./, '')
       : ''
@@ -55,35 +60,43 @@ export class ViewEngine {
    * @param {Object} params
    * @return {String} html
    */
-  async #generateHtml(view: string, params: any) {
-    view += this.#settings.viewExt
-    const viewPath = path.join(this.#settings.root, view)
+  async generateHtml<T = unknown>(
+    targetViewName: string,
+    params: KeyValueObject<T>
+  ): Promise<string> {
+    // add the extension to the view name
+    targetViewName += this.#settings.viewExt
+    // get the full path of the target view
+    const viewPath = path.join(this.#settings.root, targetViewName)
 
-    // get from cache
-    if (this.#settings.cache && this.#cache[viewPath]) {
+    // use the cache to return the compiled html string
+    if (this.#settings.cache && this.#cache[viewPath])
       return this.#cache[viewPath](params)
-    }
 
+    // read the file content
     const template = await fs.readFile(viewPath, 'utf8')
 
+    // use the ejs compiler to get the html string
     const ejsTemplateHandler = ejs.compile(template, {
       filename: viewPath,
-      _with: this.#settings._with,
-      compileDebug: this.#settings.debug && this.#settings.compileDebug,
-      debug: this.#settings.debug,
-      delimiter: this.#settings.delimiter,
-      cache: this.#settings.cache,
-      async: this.#settings.async,
-      outputFunctionName: this.#settings.outputFunctionName,
+      ...this.#settings,
     })
 
+    // handle the cache setting
     if (this.#settings.cache) this.#cache[viewPath] = ejsTemplateHandler
 
+    // return the compiled html string
     return ejsTemplateHandler(params)
   }
 
-  // this is a temp access for generateHtml method
-  async tempRender (view: string, params: any){
-    return this.#generateHtml(view, params)
-  }
+  // TODO: add render handler which interact with @macchiatojs/kernel
 }
+
+/**
+ * Expose `Router`.
+ */
+
+export default ViewEngine
+
+// Support CommonJS
+module.exports = ViewEngine
