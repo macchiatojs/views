@@ -1,6 +1,6 @@
 {
   "name": "@macchiatojs/views",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Macchiato.js view render engine based on ejs.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,7 +25,19 @@
     "type": "git",
     "url": "git+https://github.com/macchiatojs/views.git"
   },
-  "keywords": [],
+  "keywords": [
+    "macchiatojs",
+    "raw-nodejs",
+    "views",
+    "views engine",
+    "template engine",
+    "macchiatojs-views",
+    "raw-nodejs-views",
+    "views-helper",
+    "ejs",
+    "macchiatojs-ejs",
+    "raw-nodejs-ejs"
+  ],
   "license": "MIT",
   "author": {
     "name": "imed jaberi",
