@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+### v0.2.0 (15 Nov 2021)
+
+- export ViewEngineSettings type.
+- use @macchiatojs/kernel as peerDeps.
+
 ### v0.1.1 (14 Nov 2021)
 
 - add README.md file [docs].
