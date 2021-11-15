@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+### v0.3.0 (15 Nov 2021)
+
+- remove @macchiatojs/kernel.
+
 ### v0.2.0 (15 Nov 2021)
 
 - export ViewEngineSettings type.
