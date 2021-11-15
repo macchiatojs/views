@@ -15,7 +15,6 @@
 import * as ejs from 'ejs'
 import path from 'path'
 import fs from 'fs/promises'
-import type { KeyValueObject } from '@macchiatojs/kernel'
 
 /**
  * @type View engine settings
@@ -23,6 +22,10 @@ import type { KeyValueObject } from '@macchiatojs/kernel'
 export interface ViewEngineSettings extends ejs.Options {
   root: string
   viewExt?: string
+}
+
+type KeyValueObject<T = unknown> = {
+  [key: string]: T
 }
 
 /**
