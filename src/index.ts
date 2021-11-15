@@ -20,9 +20,9 @@ import type { KeyValueObject } from '@macchiatojs/kernel'
 /**
  * @type View engine settings
  */
-interface ViewEngineSettings extends ejs.Options {
+export interface ViewEngineSettings extends ejs.Options {
   root: string
-  viewExt: string
+  viewExt?: string
 }
 
 /**
@@ -88,8 +88,6 @@ class ViewEngine {
     // return the compiled html string
     return ejsTemplateHandler(params)
   }
-
-  // TODO: add render handler which interact with @macchiatojs/kernel
 }
 
 /**
